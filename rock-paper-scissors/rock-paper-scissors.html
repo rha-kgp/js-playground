@@ -10,12 +10,84 @@
   <body>
 
     <p>Rock Paper Scissors</p>
+    
+    <!--Rock button-->
+    <button onclick="
+
+      //computerMove
+      pickComputerMove();
+		          
+      //result                  
+      playGame('Rock');
+    ">
+      Rock
+    </button>
+
+
+		<!--Paper button-->
+		<button onclick="
+      
+      //computer move 
+      pickComputerMove();      
+            
+		  //result            
+      playGame('Paper');
+    ">
+      Paper
+    </button>
+
+		<!--Scissors button-->
+    <button onclick="
+      
+      //computer move
+      pickComputerMove();
+                 
+      //result            
+      playGame('Scissors');
+    ">
+      Scissors
+    </button>
+
+    <p class="js-result"></p>
+
+    <p class="js-moves"></p>
+
+    <p class="js-score"></p>
+
+    <button onclick="
+      score.wins = 0;
+      score.losses = 0;
+      score.ties = 0;
+      localStorage.removeItem('score');
+      updateScoreElement();
+    ">
+      Reset Score
+    </button>
+     
+
 
     <script>
+
+
+      let score = JSON.parse(localStorage.getItem('score')) || {
+        wins : 0,
+        losses : 0,
+        ties : 0
+      };
+
+      
+      updateScoreElement();
+
+      
       let randomNumber = '';
       let computerMove = '';
       let result = '';
+
       
+      function updateScoreElement(){
+        document.querySelector('.js-score').innerHTML = `Wins: ${score.wins}, Losses: ${score.losses}, Ties: ${score.ties}`;
+      }
+
       function pickComputerMove(){
         randomNumber = Math.random();
 
@@ -69,47 +141,28 @@
           }
         }
 
-        alert(`You picked ${playerMove}. Computer picked ${computerMove}. ${result}`)        
+        if(result === 'You win.'){
+          score.wins ++;
+        }
+        else if(result === 'You lose.'){
+          score.losses ++;
+        }
+        else if(result === 'Tie.'){
+          score.ties ++;
+        }
+
+
+        //local store only supports strings so we have to stringify score
+        localStorage.setItem('score' , JSON.stringify(score));
+
+        updateScoreElement();
+
+        document.querySelector('.js-result').innerHTML = result;
+
+        document.querySelector('.js-moves').innerHTML = `You ${playerMove} - ${computerMove} Computer`;
+       
       }
     </script>
 		
-    
-    <!--Rock button-->
-    <button onclick="
-
-      //computerMove
-      pickComputerMove();
-		          
-      //result                  
-      playGame('Rock');
-    ">
-      Rock
-    </button>
-
-
-		<!--Paper button-->
-		<button onclick="
-      
-      //computer move 
-      pickComputerMove();      
-            
-		  //result            
-      playGame('Paper');
-    ">
-      Paper
-    </button>
-
-		<!--Scissors button-->
-    <button onclick="
-      
-      //computer move
-      pickComputerMove();
-                 
-      //result            
-      playGame('Scissors');
-    ">
-      Scissors
-    </button>
-     
   </body>
 </html>
